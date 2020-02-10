@@ -1,0 +1,14 @@
+uuid: e8d63bf2-fa9b-4d51-8594-96fa548b117f
+name: codeBakers
+mail: codeBakers@codeBakers.com
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: /user/login
+admin_compact_mode: false
+weight_select_max: 100
+langcode: en
+default_langcode: en
+_core:
+  default_config_hash: yXadRE77Va-G6dxhd2kPYapAvbnSvTF6hO4oXiOEynI
