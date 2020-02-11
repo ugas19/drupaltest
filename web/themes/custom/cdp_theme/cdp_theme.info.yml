@@ -1,0 +1,15 @@
+name: cdp_heme
+type: theme
+description: 'cdp_theme.'
+core: 8.x
+libraries:
+#  - cdp_theme/sidebar_two
+  - cdp_theme/global-styling
+  - cdp_theme/global-scripts
+regions:
+  header: Header
+  primary_menu: Menu
+  content: Content
+  sidebar_first: 'Sidebar first'
+  sidebar_two: 'Sidebar two'
+  footer: Footer

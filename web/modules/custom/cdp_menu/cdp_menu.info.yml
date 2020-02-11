@@ -1,0 +1,6 @@
+name: 'cdp_menu Module'
+description: menu modelis.
+package: Custom
+version: 1.0
+type: module
+core: 8.x

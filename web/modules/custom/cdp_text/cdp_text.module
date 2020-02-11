@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function cdp_text_theme() {
+  $theme['cdp_text_theme'] = [
+    'variables' => ['link' => NULL, 'text' => NULL, 'html' => NULL],
+    'template' => 'form_test',
+  ];
+  return $theme;
+}
+
+/**
+ * Adds js to type = link.
+ */
+function cdp_text_element_info_alter(array &$types) {
+  if (isset($types['status_messages'])) {
+    $types['status_messages']['#attached']['library'][] = 'cdp_text/hookmessage';
+  }
+}
+/**
+ * Adds js to variables array.
+ */
+function cdp_text_preprocess_page(&$variables) {
+  $variables['#attached']['library'][] = 'cdp_text/hookmessage';
+}
+///**
+// * Implements hook_form_alter().
+// */
+//
+//function cdp_text_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+//
+//  $form['#attached']['library'][] = 'cdp_text/hookmessage';
+//
+//  return $form;
+//}

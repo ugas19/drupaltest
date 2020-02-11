@@ -1,0 +1,21 @@
+global-styling:
+  version: 1.0
+  css:
+    base:
+      css/base/elements.css: {}
+    component:
+      css/components/block.css: {}
+      css/components/header.css: {}
+    layout:
+      css/layout.css: {}
+      css/menu.css: {}
+global-scripts:
+  version: 1.0
+  js:
+    js/console.js: {}
+
+sidebar_two:
+  version: 1.0
+  css:
+    theme:
+      css/sidebar_two.css: {}

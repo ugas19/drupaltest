@@ -1,0 +1,11 @@
+twigmessage:
+  js:
+    js/printtwig.js: {}
+hookmessage:
+  js:
+    js/printhook.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
+    - core/drupal
+

@@ -1,0 +1,3 @@
+message:
+  js:
+    js/cdp_core.example_block.js: {}

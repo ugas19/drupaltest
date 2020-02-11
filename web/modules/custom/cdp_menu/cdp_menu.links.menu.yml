@@ -1,0 +1,6 @@
+example.form:
+  title: 'Hello module settings'
+  description: 'example of how to make an admin settings page link'
+  route_name: example.form
+  weight: 10
+  menu_name: main

@@ -1,0 +1,37 @@
+
+
+<div class="layout-container">
+
+  <header role="banner">
+    {{ page.header }}
+  </header>
+
+  <div class = "menu">
+  {{ page.primary_menu }}
+  </div>
+
+  <main role="main">
+    <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
+
+    <div class="layout-content">
+      {{ page.content }}
+    </div>{# /.layout-content #}
+
+
+    {% if page.sidebar_two %}
+      {{ attach_library('cdp_theme/sidebar_two') }}
+    <div class = "sidebar">
+      <aside class="sidebar-two" role="complementary">
+        {{ page.sidebar_two}}
+      </aside>
+    </div>
+    {% endif %}
+
+  </main>
+  {% if page.footer %}
+    <footer class = "footer"role="contentinfo">
+      {{ page.footer }}
+    </footer>
+  {% endif %}
+
+</div>{# /.layout-container #}

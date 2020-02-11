@@ -1,0 +1,33 @@
+
+.layout-container {
+  box-sizing: border-box;
+  margin-right: auto;
+  margin-left: auto;
+  min-height: 100vh;
+}
+
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  text-align: center;
+}
+
+
+.sidebar{
+  float: right;
+  position: relative;
+  top: 0;
+  left: 0;
+  top: 15px;
+
+}
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
