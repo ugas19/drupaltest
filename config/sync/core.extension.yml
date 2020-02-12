@@ -2,6 +2,8 @@ module:
   block: 0
   breakpoint: 0
   cdp_core: 0
+  cdp_menu: 0
+  cdp_text: 0
   dblog: 0
   dynamic_page_cache: 0
   field: 0
