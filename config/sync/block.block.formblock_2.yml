@@ -1,0 +1,24 @@
+uuid: fca699f8-5dc4-42fb-98e5-8869cf8ea299
+langcode: en
+status: true
+dependencies:
+  module:
+    - cdp_text
+  theme:
+    - cdp_theme
+id: formblock_2
+theme: cdp_theme
+region: sidebar_two
+weight: -2
+provider: null
+plugin: form_block
+settings:
+  id: form_block
+  label: 'form block'
+  provider: cdp_text
+  label_display: visible
+  hello_block_name: ffdfdd
+  link: 'http://codebakers.docker.localhost'
+  text: '<h1>jdsf<h1>'
+  html: '<h1>jdsf<h1>'
+visibility: {  }

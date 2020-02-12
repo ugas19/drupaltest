@@ -1,0 +1,20 @@
+uuid: e57bb759-8f6f-44ac-983c-f5487cba99f1
+langcode: en
+status: true
+dependencies:
+  module:
+    - cdp_form
+  theme:
+    - cdp_theme
+id: formablock
+theme: cdp_theme
+region: content
+weight: 0
+provider: null
+plugin: forma_block
+settings:
+  id: forma_block
+  label: 'forma block'
+  provider: cdp_form
+  label_display: visible
+visibility: {  }
