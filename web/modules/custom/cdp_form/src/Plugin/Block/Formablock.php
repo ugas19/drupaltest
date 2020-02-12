@@ -25,7 +25,7 @@ class Formablock extends BlockBase implements BlockPluginInterface {
    */
   public function build() {
     $form = \Drupal::formBuilder()->getForm('Drupal\cdp_form\Form\TestForm');
-
+    $build['#attached']['library'][] = 'cdp_form/test';
     return $form;
   }
 

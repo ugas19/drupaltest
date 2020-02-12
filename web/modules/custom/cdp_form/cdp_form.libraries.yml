@@ -5,4 +5,8 @@ form:
     - core/jquery
     - core/drupalSettings
     - core/drupal
+test:
+  js:
+    js/test.js: {}
+
 

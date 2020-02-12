@@ -14,3 +14,15 @@ function cdp_theme_preprocess_block(&$variables) {
 
   }
 }
+function cdp_theme_preprocess(&$variables) {
+  $variables['attributes'||'class']= ['alt-elements-classs'];
+  $variables['new'] = ['hellsso'];
+}
+
+/**
+ * Implements hook_theme_suggestions_alter().
+ */
+function cdp_theme_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
+  $build['#attached']['library'][] = 'cdp_form/test';
+  dump($suggestions);
+}

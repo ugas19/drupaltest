@@ -3,7 +3,7 @@
 /**
  * Implements hook_theme().
  */
-function cdp_text_theme() {
+function cdp_text_() {
   $theme['cdp_text_theme'] = [
     'variables' => ['link' => NULL, 'text' => NULL, 'html' => NULL],
     'template' => 'form_test',

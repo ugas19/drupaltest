@@ -5,9 +5,18 @@
  * Implements hook_form_alter().
  */
 
-//function cdp_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-//
-//  $form['#attached']['library'][] = 'cdp_form/form';
-//
-//  return $form;
-//}
+function cdp_form_form_alter(&$form) {
+  $build['#attached']['library'][] = 'cdp_form/test';
+  $form['#attached']['library'][] = 'cdp_form/form';
+
+  return $form;
+}
+
+/**
+ * Implements hook_block_build_alter().
+ */
+function cdp_form_preprocess(array &$build) {
+
+  $build['#attached']['library'][] = 'cdp_form/test';
+
+}
