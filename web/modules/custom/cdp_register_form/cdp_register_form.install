@@ -1,0 +1,63 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for this module.
+ */
+
+use Drupal\user\Entity\Role;
+
+/**
+ * Implements hook_install().
+ */
+function cdp_register_form_install() {
+  $role_id = 'developer';
+  $role_label = 'Developer role';
+  create_role($role_id, $role_label);
+  $role_id = 'techlead';
+  $role_label = 'Tech Lead role';
+  create_role($role_id, $role_label);
+}
+
+/**
+ * Creates roles.
+ *
+ * @param string $role_id
+ *   Given role id.
+ * @param string $role_label
+ *   Given role label.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function create_role($role_id, $role_label) {
+  $role = Role::create([
+    'id' => $role_id,
+    'label' => $role_label,
+  ]);
+  $role->save();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function cdp_register_form_uninstall() {
+  $role_id = 'developer';
+  delete_roles($role_id);
+  $role_id = 'techlead';
+  delete_roles($role_id);
+}
+
+/**
+ * Deletes given roles.
+ *
+ * @param string $role_id
+ *   Given role id.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function delete_roles($role_id) {
+  $role_to_delte = Role::load($role_id);
+  if ($role_to_delte) {
+    $role_to_delte->delete();
+  }
+}

@@ -1,0 +1,21 @@
+<?php
+
+use Drupal\cdp_register_form\Form\CdpDeveloperRegisterForm;
+use Drupal\cdp_register_form\Form\CdpTechleadRegisterForm;
+/**
+ * @file
+ * Primary module hooks for CDP User custom register form module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function cdp_register_form_entity_type_alter(array &$entity_types) {
+  $entity_types['user']->setFormClass('register_for_developers', CdpDeveloperRegisterForm::class);
+//  $entity_types['user']->setFormClass('register_for_tech_leads', CdpTechleadRegisterForm::class);
+
+}

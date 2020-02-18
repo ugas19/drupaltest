@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.registration_techlead
+label: 'Registration for techlead'
+targetEntityType: user
+cache: true

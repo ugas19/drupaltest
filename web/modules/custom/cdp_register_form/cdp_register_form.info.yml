@@ -1,0 +1,6 @@
+name: 'cdp_register_form model'
+description: 'register_form model'
+package: CDP_BG
+type: module
+version: 1.x
+core: 8.x
