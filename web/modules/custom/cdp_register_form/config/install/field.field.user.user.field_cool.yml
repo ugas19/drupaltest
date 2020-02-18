@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_cool
+  module:
+    - user
+id: user.field_cool
+field_name: field_cool
+entity_type: user
+bundle: user
+label: 'Cool line'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
+
