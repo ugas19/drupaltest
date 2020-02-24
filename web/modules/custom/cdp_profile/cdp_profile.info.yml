@@ -1,0 +1,6 @@
+name: 'Profile module'
+description: 'Main profile page module'
+package: Cdp
+type: module
+version: 1.x
+core: 8.x

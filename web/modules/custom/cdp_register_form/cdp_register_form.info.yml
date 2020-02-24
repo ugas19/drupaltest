@@ -4,3 +4,6 @@ package: CDP_BG
 type: module
 version: 1.x
 core: 8.x
+dependencies:
+  - field_ui
+  - user
