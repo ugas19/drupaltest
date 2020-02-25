@@ -106,11 +106,13 @@ class ProfilePageController extends ControllerBase {
     $entity      = $this->entityTypeManager()->getStorage($entityType)->load(1);
     $developer   = $this->userStorage->create();
     $passform    = $this->entityFormBuilder->getForm($developer, 'pass_change');
+    $detailsform = $this->entityFormBuilder->getForm($developer, 'details_change');
 
 
     return [
       $viewBuilder->view($entity, 'profilepage'),
       $passform,
+      $detailsform,
     ];
 
   }

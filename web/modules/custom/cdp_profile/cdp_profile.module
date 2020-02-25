@@ -1,5 +1,6 @@
 <?php
-
+use Drupal\cdp_profile\Form\ChangeDetailsForm;
+use Drupal\cdp_profile\Form\ChangePasswordForm;
 /**
  * @file
  * Contains custom_events.module.
@@ -25,8 +26,8 @@ function cdp_profile_theme_suggestions_alter(array &$suggestions, array $variabl
  */
 function cdp_profile_entity_type_alter(array &$entity_types) {
 
-  $entity_types['user']->setFormClass('details_change', \Drupal\user\ProfileForm::class);
-  $entity_types['user']->setFormClass('pass_change', \Drupal\cdp_profile\Form\ChangePasswordForm::class);
+  $entity_types['user']->setFormClass('details_change', ChangeDetailsForm::class);
+  $entity_types['user']->setFormClass('pass_change', ChangePasswordForm::class);
 
 
 }

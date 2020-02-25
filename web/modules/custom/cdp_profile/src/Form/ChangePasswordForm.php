@@ -2,14 +2,13 @@
 
 namespace Drupal\cdp_profile\Form;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Entity\ContentEntityForm;
+use Drupal\Core\Entity\EntityRepositoryInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\user\Entity\User;
-use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\user\UserInterface;
-use Drupal\Core\Url;
 use Drupal\Core\Password\PasswordInterface;
-use Drupal\Component\Utility\Crypt;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -25,19 +24,19 @@ class ChangePasswordForm extends ContentEntityForm {
   protected $passwordHasher;
 
   /**
-   * The user.
-   *
-   * @var \Drupal\user\UserInterface
-   */
-  protected $userProfile;
-
-  /**
    * Constructs a UserPasswordForm object.
    *
    * @param \Drupal\Core\Password\PasswordInterface $password_hasher
    *   The password service.
+   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
+   *   The entity repository.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
+   *   The entity type bundle service.
+   * @param \Drupal\Component\Datetime\TimeInterface $time
+   *   The time service.
    */
-  public function __construct(PasswordInterface $password_hasher) {
+  public function __construct(PasswordInterface $password_hasher, EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL) {
+    parent::__construct($entity_repository, $entity_type_bundle_info, $time);
     $this->passwordHasher = $password_hasher;
   }
 
@@ -46,7 +45,10 @@ class ChangePasswordForm extends ContentEntityForm {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('password')
+      $container->get('password'),
+      $container->get('entity.repository'),
+      $container->get('entity_type.bundle.info'),
+      $container->get('datetime.time')
     );
   }
 
@@ -67,24 +69,15 @@ class ChangePasswordForm extends ContentEntityForm {
    * @param \Drupal\user\UserInterface $user
    *   The user object.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, UserInterface $user = NULL) {
-    /** @var \Drupal\user\UserInterface $account */
-    $this->userProfile = $account = User::load($this->currentUser()->id());
+  public function buildForm(array $form, FormStateInterface $form_state) {
+    $account = User::load($this->currentUser()->id());
     $user = $this->currentUser();
-    dump($account);
-    dump(User::load($this->currentUser()->id()));
     $config = \Drupal::config('user.settings');
     $form['#cache']['tags'] = $config->getCacheTags();
-    $register = $account->isAnonymous();
-
-
     $form['account'] = [
       '#type'   => 'container',
       '#weight' => -10,
     ];
-
-    // Display password field only for existing users or when user is allowed to
-    // assign a password during registration.
     if ($user) {
       $form['account']['pass'] = [
         '#type' => 'password_confirm',
@@ -92,23 +85,12 @@ class ChangePasswordForm extends ContentEntityForm {
         '#description' => $this->t('To change the current user password, enter the new password in both fields.'),
         '#required' => TRUE,
       ];
-
-      // To skip the current password field, the user must have logged in via a
-      // one-time link and have the token in the URL. Store this in $form_state
-      // so it persists even on subsequent Ajax requests.
-//      if (!$form_state->get('user_pass_reset') && ($token = $this->getRequest()->get('pass-reset-token'))) {
-//        $session_key = 'pass_reset_' . $account->id();
-//        $user_pass_reset = isset($_SESSION[$session_key]) && Crypt::hashEquals($_SESSION[$session_key], $token);
-//        $form_state->set('user_pass_reset', $user_pass_reset);
-//      }
-
-      // The user must enter their current password to change to a new one.
       if ($user->id() != NULL) {
         $form['account']['current_pass'] = [
           '#type' => 'password',
           '#title' => $this->t('Current password'),
           '#size' => 25,
-          '#access' => !$form_state->get('user_pass_reset'),
+          '#access' => TRUE,
           '#weight' => -5,
           // Do not let web browsers remember this password, since we are
           // trying to confirm that the person submitting the form actually
@@ -117,26 +99,7 @@ class ChangePasswordForm extends ContentEntityForm {
           '#required' => TRUE,
         ];
         $form_state->set('user', $account);
-
-        // The user may only change their own password without their current
-//        // password if they logged in via a one-time login link.
-//        if (!$form_state->get('user_pass_reset')) {
-//          $form['account']['current_pass']['#description'] = $this->t('Required if you want to change the %pass below. <a href=":request_new_url" title="Send password reset instructions via email.">Reset your password</a>.', [
-//            '%pass' => $this->t('Password'),
-//            ':request_new_url' => Url::fromRoute('user.pass'),
-//          ]);
-//        }
       }
-
-      // This should never show. The data is needed by other modules.
-      $roles = array_map(['\Drupal\Component\Utility\Html', 'escape'], user_role_names(TRUE));
-      $form['account']['roles'] = [
-        '#type' => 'checkboxes',
-        '#title' => $this->t('Roles'),
-        '#default_value' => (!$register ? $account->getRoles() : []),
-        '#options' => $roles,
-        '#access' => FALSE,
-      ];
     }
 
     $form['actions'] = ['#type' => 'actions'];
@@ -160,23 +123,14 @@ class ChangePasswordForm extends ContentEntityForm {
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $user = User::load($this->currentUser()->id());
     $user->setPassword($form_state->getValue('pass'));
     $user->save();
-    die();
     $this->messenger()->addStatus($this->t('Your password has been changed.'));
-  }
-
-  /**
-   * Returns the user.
-   *
-   * @return \Drupal\user\UserInterface
-   *   The User profile for the current user.
-   */
-  public function getEntity() {
-    return $this->userProfile;
   }
 
 }
