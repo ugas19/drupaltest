@@ -1,9 +1,14 @@
-cdp_profile.page:
-#entity.profile.canonical:
-  path: '/user/profile'
+cdp_profile.developer_page:
+  path: '/user/profile/developer'
   defaults:
     _controller: '\Drupal\cdp_profile\Controller\ProfilePageController::profileFront'
-#    _entity_view: 'user.full'
+    _title: 'Create page for user profile'
+  requirements:
+    _permission: 'access content'
+cdp_profile.techlead_page:
+  path: '/user/profile/techlead'
+  defaults:
+    _controller: '\Drupal\cdp_profile\Controller\ProfilePageController::profileFront'
     _title: 'Create page for user profile'
   requirements:
     _permission: 'access content'

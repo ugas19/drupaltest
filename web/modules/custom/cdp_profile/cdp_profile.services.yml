@@ -3,9 +3,6 @@ services:
     class: 'Drupal\cdp_profile\EventSubscriber\ProfileEventSubscriber'
     arguments:
       - '@current_user'
-    tags:
-      - { name: 'event_subscriber' }
-  profile_event_user_login:
-    class: 'Drupal\cdp_profile\EventSubscriber\UserLoginSubscriber'
+      - '@router.route_provider'
     tags:
       - { name: 'event_subscriber' }

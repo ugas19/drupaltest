@@ -3,7 +3,9 @@
 namespace Drupal\cdp_profile\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Entity\EntityFormBuilderInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\user\UserStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Routing\AccessAwareRouterInterface;
@@ -40,6 +42,20 @@ class ProfilePageController extends ControllerBase {
   protected $router;
 
   /**
+   * Entity form builder interface.
+   *
+   * @var \Drupal\Core\Entity\EntityFormBuilderInterface
+   */
+  protected $entityFormBuilder;
+
+  /**
+   * User storage interface.
+   *
+   * @var \Drupal\user\UserStorageInterface
+   */
+  protected $userStorage;
+
+  /**
    * MainController constructor.
    *
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
@@ -48,11 +64,17 @@ class ProfilePageController extends ControllerBase {
    *   The http kernel interface.
    * @param \Drupal\Core\Routing\AccessAwareRouterInterface $router
    *   The access aware router interface.
+   * @param \Drupal\Core\Entity\EntityFormBuilderInterface $entity_form_builder
+   *   Entity form builder interface.
+   * @param \Drupal\user\UserStorageInterface $user_storage
+   *   User storage interface.
    */
-  public function __construct(RequestStack $request_stack, HttpKernelInterface $http_kernel, AccessAwareRouterInterface $router) {
-    $this->requestStack = $request_stack;
-    $this->httpKernel   = $http_kernel;
-    $this->router       = $router;
+  public function __construct(RequestStack $request_stack, HttpKernelInterface $http_kernel, AccessAwareRouterInterface $router, EntityFormBuilderInterface $entity_form_builder, UserStorageInterface $user_storage) {
+    $this->requestStack      = $request_stack;
+    $this->httpKernel        = $http_kernel;
+    $this->router            = $router;
+    $this->entityFormBuilder = $entity_form_builder;
+    $this->userStorage       = $user_storage;
   }
 
   /**
@@ -62,53 +84,35 @@ class ProfilePageController extends ControllerBase {
     return new static(
       $container->get('request_stack'),
       $container->get('http_kernel'),
-      $container->get('router')
+      $container->get('router'),
+      $container->get('entity.form_builder'),
+      $container->get('entity_type.manager')->getStorage('user')
     );
   }
 
-  public function FormBuilder(){
-    
-  }
   /**
    * Profile frontpage.
    *
-
    * @return array
+   *   Return Profile page.
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function profileFront() {
-    $form_class = '\Drupal\cdp_profile\Form\TestForm';
-    $builderform = \Drupal::formBuilder()->getForm($form_class);
-    $entityType = 'user';
-    //    $display = entity_get_display($entityType, $node->getType(), $viewmode);
+    $entityType  = 'user';
     $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder($entityType);
-    $entity     = $this->entityTypeManager()->getStorage($entityType)->load(1);
-    $entity_url = $entity->toUrl();
-    $viewBuilder->view($entity)['#view_mode'] = 'user.profilepage';
-//    dump($viewBuilder->view($entity)['#view_mode']);
-    $viewBuilder->view($entity)['#view_mode'] = 'user.profilepage';
-
-//    $viewBuilder->viewField($viewBuilder);
+    $entity      = $this->entityTypeManager()->getStorage($entityType)->load(1);
+    $developer   = $this->userStorage->create();
+    $passform    = $this->entityFormBuilder->getForm($developer, 'pass_change');
 
 
-//    $build['form'] = \Drupal::formBuilder()->getForm($form_class);
-    $build['user'][1]['#view_mode'] = 'user.profilepage';
-    return $build;
-    $request     = $this->requestStack->getCurrentRequest();
-    $sub_request = clone $request;
-    $sub_request->attributes->add($this->router->match('/' . $entity_url->getInternalPath()));
-//    if()
-    $sub_request->attributes->add(['view_mode' => 'user.profilepage']);
-    $sub_request->attributes->add(['_form' => $builderform]);
-    dump($sub_request);
-    $response = $this->httpKernel->handle($sub_request, HttpKernelInterface::SUB_REQUEST);
-    dump($response);
-    return $response;
-    return [$builderform,
-      $response];
-
+    return [
+      $viewBuilder->view($entity, 'profilepage'),
+      $passform,
+    ];
 
   }
+
 }
